@@ -13,12 +13,12 @@ def tplot(rdf:pd.DataFrame, windowsize:int):
     # list of contigs in order length
     tigs = list(rdf[rdf['pos'] > 40].groupby(['tig'], sort=False)['pos'].max().sort_values(ascending=False).keys())
     fig,ax = plt.subplots(len(tigs),1,figsize=(8,20))
-    maxx = rdf['pos'].max()
+    maxx = rdf['pos'].max() * windowsize
     maxy = rdf['depth'].max()
     
     for i,tig in enumerate(tigs):
         tdf = rdf[rdf['tig'] == tig]
-        ax[i].bar(x=tdf['pos']*100,height=tdf['depth'] + windowsize,width=200)
+        ax[i].bar(x=tdf['pos'] * windowsize,height=tdf['depth'] + maxy / 10000,width=200)
         ax[i].set_ylim(0,maxy)
         ax[i].set_xlim(-10,maxx)
         if not i == len(tigs) -1:
