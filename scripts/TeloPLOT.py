@@ -27,7 +27,9 @@ def tplot(rdf:pd.DataFrame, windowsize:int):
             ax[i].spines["right"].set_visible(False)
             ax[i].spines["left"].set_visible(False)
             ax[i].get_yaxis().set_visible(False)
-            ax[i].set_xlabel('position (Mbp)')
+            ax[i].set_xlabel('position (Mbp)', fontsize = 14)
+    xticklabels = [ int(k) for k in ax[-1].get_xticks() ]
+    ax[-1].set_xticklabels(xticklabels, fontsize = 14)
     return fig,ax
 
 def main():
