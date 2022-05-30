@@ -12,15 +12,14 @@ def tplot(rdf:pd.DataFrame, windowsize:int):
     """creates plot of contigs in order of size from largest to smallest with mapped telomeric read depths"""
     # list of contigs in order length
     tigs = list(rdf[rdf['pos'] > 40].groupby(['tig'], sort=False)['pos'].max().sort_values(ascending=False).keys())
-    fig,ax = plt.subplots(len(tigs),1,figsize=(8,20))
-    maxx = rdf['pos'].max() * windowsize
+    fig,ax = plt.subplots(len(tigs),1,figsize=(8,20),sharey = True, sharex = True)
+    #maxx = rdf['pos'].max() * windowsize
     maxy = rdf['depth'].max()
     
     for i,tig in enumerate(tigs):
         tdf = rdf[rdf['tig'] == tig]
-        ax[i].bar(x=tdf['pos'] * windowsize,height=tdf['depth'] + maxy / 10000,width=200)
-        ax[i].set_ylim(0,maxy)
-        ax[i].set_xlim(-10,maxx)
+        ax[i].bar(x=tdf['pos'] * windowsize / 1000,height=tdf['depth'] ,width= windowsize / 500,color = 'orange')
+        ax[i].plot((0,tdf['pos'].max() * windowsize / 1000),(0,0),color = 'blue',linewidth = 4)
         if not i == len(tigs) -1:
             ax[i].axis('off')
         else:
