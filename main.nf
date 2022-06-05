@@ -70,5 +70,8 @@ process Plotting {
 workflow {
    main: 
     fastq = file(params.fastq, type: "file")
+    ref = file(params.ref, type: "file")
     telolist = findTeloReads(fastq) 
+    telomericreads = pullTeloSeqs(fastq, telolist)
+    bamarooney = TeloMap(ref, telomericreads)
 } 
