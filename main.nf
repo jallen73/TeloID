@@ -23,6 +23,48 @@ process findTeloReads {
     """
 }
 
+process pullTeloSeqs {
+    label "TeloID"
+    cpus 1
+   
+    input: 
+      file fastq
+      file telo_read_names
+    
+    ouput:
+      path "telomericReads.fastq", emit TeloReads
+
+  """
+  catfishq $fastq \
+  | fgrep -f telomeric_read_names.list -A 3 --no-group-sep /dev/stdin \
+  > telomericReads.fastq
+  """
+}
+
+process TeloMap {
+
+    """
+    minimap2 -ax map-ont -t 20 --secondary=no {assembly} telomericReads.fastq | samtools sort -@ 20 > telomereReads.bam
+    samtools index telomereReads.bam
+    """
+}
+
+process DepthCalc {
+
+
+    """
+    mosdepth
+    """
+}
+
+process Plotting {
+
+
+  """
+  fancy dancy python script
+  """
+}
+
 //Workflow entrypoints
 
 workflow {
