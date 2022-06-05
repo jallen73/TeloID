@@ -7,7 +7,7 @@ process findTeloReads {
     cpus 1
    
     input: 
-      path fastq
+      file fastq
 
     output: 
       path "telomeric_read_names.list", emit: telo_read_names
@@ -27,5 +27,6 @@ process findTeloReads {
 
 workflow {
    main: 
-    telolist = findTeloReads(params.fastq) 
+    fastq = file(params.fastq, type: "file")
+    telolist = findTeloReads(fastq) 
 } 
