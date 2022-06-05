@@ -6,11 +6,14 @@ process findTeloReads {
     label "TeloID"
     cpus 1
    
+    input: 
+      file fastq
+
     output: 
       path "telomeric_read_names.list", emit: telo_read_names
       
     """
-      catfishq $params.fastq \
+      catfishq $fastq \
       | seqkit fq2fa \
       | NCRF $params.telomere_sequence --stats=events --minlength=45 \
       | sed -e 's/[A-Za-z]*=//g' -e 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
@@ -23,6 +26,6 @@ process findTeloReads {
 //Workflow entrypoints
 
 workflow {
-  main: 
-    telolist = findTeloReads() 
+   main: 
+    telolist = findTeloReads(params.fastq) 
 } 
