@@ -25,4 +25,4 @@ process findTeloReads {
 workflow {
   main: 
     telolist = findTeloReads() 
-    
+} 
