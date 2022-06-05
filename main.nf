@@ -36,24 +36,38 @@ process pullTeloSeqs {
 
   """
   catfishq $fastq \
-  | fgrep -f telomeric_read_names.list -A 3 --no-group-sep /dev/stdin \
+  | fgrep -f $telo_read_names -A 3 --no-group-sep /dev/stdin \
   > telomericReads.fastq
   """
 }
 
 process TeloMap {
+    label "TeloID"
+    cpus $params.th
+
+    input:
+      file ref
+      file TeloReads
+
+    output:
+      path "telomereReads.bam", emit Telobam
 
     """
-    minimap2 -ax map-ont -t 20 --secondary=no {assembly} telomericReads.fastq | samtools sort -@ 20 > telomereReads.bam
+    minimap2 -ax map-ont -t $params.th --secondary=no ref TeloReads \
+    | samtools sort -@ 20 > telomereReads.bam
     samtools index telomereReads.bam
     """
 }
 
 process DepthCalc {
+    label "TeloID"
+    cpus 1
+
+    input:
 
 
     """
-    mosdepth
+    mosdepth -t 
     """
 }
 
@@ -74,4 +88,5 @@ workflow {
     telolist = findTeloReads(fastq) 
     telomericreads = pullTeloSeqs(fastq, telolist)
     bamarooney = TeloMap(ref, telomericreads)
+
 } 
