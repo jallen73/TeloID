@@ -43,7 +43,7 @@ process pullTeloSeqs {
 
 process TeloMap {
     label "TeloID"
-    cpus $params.th
+    cpus params.threads
 
     input:
       file ref
@@ -53,7 +53,7 @@ process TeloMap {
       path "telomereReads.bam", emit Telobam
 
     """
-    minimap2 -ax map-ont -t $params.th --secondary=no ref TeloReads \
+    minimap2 -ax map-ont -t $params.threads --secondary=no ref TeloReads \
     | samtools sort -@ 20 > telomereReads.bam
     samtools index telomereReads.bam
     """
@@ -61,13 +61,16 @@ process TeloMap {
 
 process DepthCalc {
     label "TeloID"
-    cpus 1
+    cpus params.threads
 
     input:
+      file Telobam
 
+    output:
+      path "telodepth.regions.bed.gz", emit Depthbed
 
     """
-    mosdepth -t 
+    mosdepth -t $params.threads -b $params.window_size -n telodepth $Telobam
     """
 }
 
@@ -87,6 +90,7 @@ workflow {
     ref = file(params.ref, type: "file")
     telolist = findTeloReads(fastq) 
     telomericreads = pullTeloSeqs(fastq, telolist)
-    bamarooney = TeloMap(ref, telomericreads)
-
+    Telobam = TeloMap(ref, telomericreads)
+    telodepth = DepthCalc(Telobam)
+    finalfig = Plotting(telodepth)
 } 
