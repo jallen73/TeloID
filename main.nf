@@ -7,9 +7,8 @@ process findTeloReads {
       path "telomeric_read_names.list", emit: telo_read_names
       
     """
-      cat $params.fastq \
-      | awk '{a++}a%4==1{print ">"$0}a%4==2{print $0}' \
-      | tr -d '@' \ 
+      catfishq $params.fastq \
+      | seqkit fq2fa \
       | NCRF $params.telomere_sequence --stats=events --minlength=45 \
       | sed -e 's/[A-Za-z]*=//g' -e 's/ \([0-9]*\)-\([0-9]*\) / \1 \2 /' \
       | tr -d "%" \
