@@ -7,7 +7,7 @@ process findTeloReads {
     cpus 1
    
     input: 
-      file fastq
+      path fastq
 
     output: 
       path "telomeric_read_names.list", emit: telo_read_names
