@@ -75,7 +75,14 @@ process DepthCalc {
 }
 
 process Plotting {
+  label "TeloID"
+  cpus 1
 
+  input:
+    file telodepth
+
+  output:
+    path "teloPlot.png", emit TeloPlot
 
   """
   fancy dancy python script

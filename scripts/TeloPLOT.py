@@ -47,10 +47,10 @@ def main():
         pos = int(int(fields[1])/args.windowsize)
         seq = fields[0]
         dictkey = seq + ':' + str(pos)
-        depth = int(fields[2])
+        depth = int(fields[3])
         if not dictkey in readsdict:
             readsdict[dictkey] = [seq,pos,0]
-        readsdict[dictkey][2] += depth
+        readsdict[dictkey][2] += depth 
 
     # parses dictionary it into a dataframe
     rdf = pd.DataFrame().from_dict(readsdict,orient='index')
