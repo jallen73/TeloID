@@ -89,6 +89,13 @@ process Plotting {
   """
 }
 
+process OutputLocation {
+  label "TeloID"
+  cpus 1
+
+  
+}
+
 //Workflow entrypoints
 
 workflow {
