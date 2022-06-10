@@ -36,7 +36,7 @@ def main():
     # Define command line arguments
     parser = argparse.ArgumentParser("""This function take a depth file from samtools depth and plots depths within windows""")
     parser.add_argument('--depthfile', help = 'output file from "samtools depth"', required = True)
-    parser.add_argument('--windowsize', help = 'define the window size to bin read counts', default = 10000, type = int)
+    parser.add_argument('--windowsize', help = 'define the window size to bin read counts', default = 1, type = int)
     parser.add_argument('--output', help = 'file name to write plot, file type determined by suffix (e.g., species1telo.png)', required = True)
     args = parser.parse_args()
 

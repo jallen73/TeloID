@@ -82,10 +82,10 @@ process Plotting {
     file telodepth
 
   output:
-    path "teloPlot.png", emit TeloPlot
+    path "telomere_map_plot.$params.file_suffix", emit TeloPlot
 
   """
-  fancy dancy python script
+  teloPLOT.py --depthfile telodepth --windowsize 1 --output telomere_map_plot.$params.file_suffix
   """
 }
 
