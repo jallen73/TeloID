@@ -31,7 +31,7 @@ process pullTeloSeqs {
       file fastq
       file telo_read_names
     
-    ouput:
+    output:
       path "telomericReads.fastq", emit TeloReads
 
   """
