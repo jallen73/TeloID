@@ -32,7 +32,7 @@ process pullTeloSeqs {
       file telo_read_names
     
     output:
-      path "telomericReads.fastq", emit TeloReads
+      path "telomericReads.fastq", emit: TeloReads
 
   """
   catfishq $fastq \
@@ -50,7 +50,7 @@ process TeloMap {
       file TeloReads
 
     output:
-      path "telomereReads.bam", emit Telobam
+      path "telomereReads.bam", emit: Telobam
 
     """
     minimap2 -ax map-ont -t $params.threads --secondary=no ref TeloReads \
@@ -67,7 +67,7 @@ process DepthCalc {
       file Telobam
 
     output:
-      path "telodepth.regions.bed.gz", emit Depthbed
+      path "telodepth.regions.bed.gz", emit: Depthbed
 
     """
     mosdepth -t $params.threads -b $params.window_size -n telodepth $Telobam
@@ -82,7 +82,7 @@ process Plotting {
     file telodepth
 
   output:
-    path "telomere_map_plot.$params.file_suffix", emit TeloPlot
+    path "telomere_map_plot.$params.file_suffix", emit: TeloPlot
 
   """
   teloPLOT.py --depthfile telodepth --windowsize 1 --output telomere_map_plot.$params.file_suffix
