@@ -2,11 +2,6 @@
 
 nextflow.enable.dsl = 2
 
-println "Project : $workflow.projectDir"
-println "Git info: $workflow.repository - $workflow.revision [$workflow.commitId]"
-println "Cmd line: $workflow.commandLine"
-println "Manifest's pipeline version: $workflow.manifest.version"
-
 process findTeloReads {
     label "TeloID"
     cpus 1
@@ -92,7 +87,7 @@ process Plotting {
     path "telomere_map_plot.$params.file_suffix", emit: TeloPlot
 
   """
-  teloPLOT.py --depthfile telodepth --windowsize 1 --output telomere_map_plot.$params.file_suffix
+  $workflow.projectDir/scripts/teloPLOT.py --depthfile telodepth --windowsize 1 --output telomere_map_plot.$params.file_suffix
   """
 }
 
