@@ -7,6 +7,13 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
 import argparse
+import gzip
+
+def maybegz(fname):
+    if fname[-3:] == '.gz' : 
+        return gzip.open(fname, "rt")
+    else: 
+        return open(fname)
 
 def tplot(rdf:pd.DataFrame, windowsize:int):
     """creates plot of contigs in order of size from largest to smallest with mapped telomeric read depths"""
@@ -42,7 +49,7 @@ def main():
 
     # reading depthfile from samtools and reads it into a dictionary 
     readsdict = {}
-    for line in open(args.depthfile):
+    for line in maybegz(args.depthfile):
         fields = line.strip().split('\t')
         pos = int(int(fields[1])/args.windowsize)
         seq = fields[0]
