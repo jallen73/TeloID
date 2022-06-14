@@ -54,7 +54,7 @@ def main():
         pos = int(int(fields[1])/args.windowsize)
         seq = fields[0]
         dictkey = seq + ':' + str(pos)
-        depth = int(fields[3])
+        depth = float(fields[3])
         if not dictkey in readsdict:
             readsdict[dictkey] = [seq,pos,0]
         readsdict[dictkey][2] += depth 
