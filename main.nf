@@ -93,7 +93,18 @@ process OutputLocation {
   label "TeloID"
   cpus 1
 
-  
+  publishDir "${params.out_dir}", mode: 'copy', pattern: "*"
+
+  input:
+    file fname
+
+  output:
+    file fname
+
+  """
+  echo 'Writing output files'
+  """
+
 }
 
 //Workflow entrypoints
@@ -107,4 +118,18 @@ workflow {
     Telobam = TeloMap(ref, telomericreads)
     telodepth = DepthCalc(Telobam)
     finalfig = Plotting(telodepth)
+    OutputLocation(finalfig)
 } 
+
+println """
+ ________  __           
+|        \\|  \\          
+| $$$$$$$$ \\$$ _______  
+| $$__    |  \\|       \\ 
+| $$  \\   | $$| $$$$$$$\
+| $$$$$   | $$| $$  | $$
+| $$      | $$| $$  | $$
+| $$      | $$| $$  | $$
+ \\$$       \\$$ \\$$   \\$$
+
+ """
