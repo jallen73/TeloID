@@ -116,8 +116,8 @@ workflow {
     ref = file(params.ref, type: "file")
     telolist = findTeloReads(fastq) 
     telomericreads = pullTeloSeqs(fastq, telolist)
-    //Telobam = TeloMap(ref, telomericreads)
-    //telodepth = DepthCalc(Telobam)
-    //finalfig = Plotting(telodepth)
-    //OutputLocation(finalfig)
+    Telobam = TeloMap(ref, telomericreads)
+    telodepth = DepthCalc(Telobam)
+    finalfig = Plotting(telodepth)
+    OutputLocation(finalfig)
 } 
