@@ -87,7 +87,7 @@ process Plotting {
     path "telomere_map_plot.$params.file_suffix", emit: TeloPlot
 
   """
-  python $workflow.projectDir/scripts/TeloPLOT.py --depthfile telodepth --windowsize 1 --output telomere_map_plot.$params.file_suffix
+  python $workflow.projectDir/scripts/TeloPLOT.py --depthfile $telodepth --windowsize 1 --output telomere_map_plot.$params.file_suffix
   """
 }
 
