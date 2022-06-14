@@ -54,7 +54,7 @@ process TeloMap {
       path "telomereReads.bam.bai", emit: Telobai
 
     """
-    minimap2 -ax map-ont -t $params.threads --secondary=no ref TeloReads \
+    minimap2 -ax map-ont -t $params.threads --secondary=no $ref $TeloReads \
     | samtools sort -@ 20 > telomereReads.bam
     samtools index telomereReads.bam
     """
