@@ -51,6 +51,7 @@ process TeloMap {
 
     output:
       path "telomereReads.bam", emit: Telobam
+      path "telomereReads.bam.bai", emit: Telobai
 
     """
     minimap2 -ax map-ont -t $params.threads --secondary=no ref TeloReads \
@@ -65,6 +66,7 @@ process DepthCalc {
 
     input:
       file Telobam
+      file Telobai
 
     output:
       path "telodepth.regions.bed.gz", emit: Depthbed
