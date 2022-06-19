@@ -32,12 +32,12 @@ process pullTeloSeqs {
       file telo_read_names
     
     output:
-      path "telomericReads.fastq", emit: TeloReads
+      path "TeloID_telomericReads.fastq", emit: TeloReads
 
   """
   catfishq $fastq \
   | fgrep -f $telo_read_names -A 3 --no-group-sep /dev/stdin \
-  > telomericReads.fastq
+  > TeloID_telomericReads.fastq
   """
 }
 
