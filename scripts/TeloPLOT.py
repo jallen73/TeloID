@@ -41,8 +41,8 @@ def tplot(rdf:pd.DataFrame, windowsize:int):
 
 def main():
     # Define command line arguments
-    parser = argparse.ArgumentParser("""This function take a depth file from samtools depth and plots depths within windows""")
-    parser.add_argument('--depthfile', help = 'output file from "samtools depth"', required = True)
+    parser = argparse.ArgumentParser("""This function take a depth file from mosdpth and plots depths within windows""")
+    parser.add_argument('--depthfile', help = 'output file from "mosdepth depth"', required = True)
     parser.add_argument('--windowsize', help = 'define the window size to bin read counts', default = 1, type = int)
     parser.add_argument('--output', help = 'file name to write plot, file type determined by suffix (e.g., species1telo.png)', required = True)
     args = parser.parse_args()
@@ -61,7 +61,7 @@ def main():
 
     # parses dictionary it into a dataframe
     rdf = pd.DataFrame().from_dict(readsdict,orient='index')
-    rdf.columns = ['tig','pos','depth']
+    rdf.columns = ['tig','pos','end','depth']
     rdf.head()
 
     fig,ax = tplot(rdf,args.windowsize)
