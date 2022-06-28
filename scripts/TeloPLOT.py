@@ -25,8 +25,8 @@ def tplot(rdf:pd.DataFrame, windowsize:int):
     
     for i,tig in enumerate(tigs):
         tdf = rdf[rdf['tig'] == tig]
-        ax[i].bar(x=tdf['pos'] * windowsize,height=tdf['depth'] ,width= windowsize,color = 'orange')
-        ax[i].plot((0,tdf['pos'].max() * windowsize),(0,0),color = 'blue',linewidth = 4)
+        ax[i].bar(x=tdf['pos'] * windowsize / 1000,height=tdf['depth'] ,width= windowsize / 500,color = 'orange')
+        ax[i].plot((0,tdf['pos'].max() * windowsize / 1000),(0,0),color = 'blue',linewidth = 4)
         if not i == len(tigs) -1:
             ax[i].axis('off')
         else:
@@ -47,7 +47,7 @@ def main():
     parser.add_argument('--output', help = 'file name to write plot, file type determined by suffix (e.g., species1telo.png)', required = True)
     args = parser.parse_args()
 
-    # reading depthfile from samtools and reads it into a dictionary 
+    # reading depthfile from mosdepth and reads it into a dictionary 
     readsdict = {}
     for line in maybegz(args.depthfile):
         fields = line.strip().split('\t')
