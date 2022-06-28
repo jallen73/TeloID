@@ -25,8 +25,8 @@ def tplot(rdf:pd.DataFrame, windowsize:int):
     
     for i,tig in enumerate(tigs):
         tdf = rdf[rdf['tig'] == tig]
-        ax[i].bar(x=tdf['pos'] * windowsize / 1000,height=tdf['depth'] ,width= windowsize / 500,color = 'orange')
-        ax[i].plot((0,tdf['pos'].max() * windowsize / 1000),(0,0),color = 'blue',linewidth = 4)
+        ax[i].bar(x=tdf['pos'] * windowsize,height=tdf['depth'] ,width= windowsize,color = 'orange')
+        ax[i].plot((0,tdf['pos'].max() * windowsize),(0,0),color = 'blue',linewidth = 4)
         if not i == len(tigs) -1:
             ax[i].axis('off')
         else:
@@ -61,7 +61,7 @@ def main():
 
     # parses dictionary it into a dataframe
     rdf = pd.DataFrame().from_dict(readsdict,orient='index')
-    rdf.columns = ['tig','pos','end','depth']
+    rdf.columns = ['tig','pos','depth']
     rdf.head()
 
     fig,ax = tplot(rdf,args.windowsize)
