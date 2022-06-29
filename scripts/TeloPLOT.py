@@ -15,7 +15,7 @@ def maybegz(fname):
     else: 
         return open(fname)
 
-def tplot(rdf:pd.DataFrame, windowsize:int):
+def tplot(rdf:pd.DataFrame):
     """creates plot of contigs in order of size from largest to smallest with mapped telomeric read depths"""
     # list of contigs in order length
     tigs = list(rdf[rdf['pos'] > 40].groupby(['tig'], sort=False)['pos'].max().sort_values(ascending=False).keys())
