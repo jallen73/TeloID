@@ -5,21 +5,25 @@ nextflow.enable.dsl = 2
 process findTeloReads {
     label "TeloID"
     cpus 1
-   
-    input: 
-      file fastq
 
-    output: 
-      path "telomeric_read_names.list", emit: telo_read_names
-      
+    input:
+        file fastq
+
+    output:
+        path "telomeric_read_names.list", emit: telo_read_names
+    
     """
-      catfishq $fastq \
-      | seqkit fq2fa \
-      | NCRF $params.telomere_sequence --stats=events --minlength=45 \
-      | sed -e 's/[A-Za-z]*=//g' -e 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
-      | tr -d "%" \
-      | awk '/^#/{p=0}/^#/ && \$4>90{p=1} !/^TTAGGG/ && !/^#/ && p>0 && \$2>4000 && ((/TAACCC/&& \$4 < 30)||(/TTAGGG/&&\$2-\$5 < 30)) {print \$1}' \
-      > telomeric_read_names.list 
+    seqkit fq2fa $fastq | NCRF ${params.telomotif} --minlength=${params.minMotifLength} --stats=events > telomeres.ncrf
+    cat telomeres.ncrf\
+    | grep -B 2 --no-group-sep "^${params.telomotif}+" \
+    | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
+    | awk '\$2 - \$5 < 100{print \$1}'\
+    > telomeric_read_names.list
+    cat telomeres.ncrf\
+    | grep -B 2 --no-group-sep "^${params.telomotif}-"\
+    | grep -A 1 --no-group-sep -P "mRatio=9[0-9]|mRatio=100" | grep -v "^#" | sed 's/ \\([0-9]*\\)-\\([0-9]*\\) / \\1 \\2 /' \
+    | awk '\$4 < 100{print \$1}'\
+    >> telomeric_read_names.list
     """
 }
 
