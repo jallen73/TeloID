@@ -1,2 +1,2 @@
 # TeloID
-Nextflow pipeline to identify, map, and plot telomeric reads
+Nextflow pipeline to identify and map telomeric reads.
